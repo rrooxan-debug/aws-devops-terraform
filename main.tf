@@ -3,7 +3,7 @@ terraform {
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 5.0"
     }
   }
@@ -15,23 +15,23 @@ provider "aws" {
 
 # 2. Create Custom VPC
 resource "aws_vpc" "devops_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
-    Name = "DevOps-Production-VPC"
+    Name        = "DevOps-Production-VPC"
     Environment = "Production"
-    ManagedBy = "Terraform"
+    ManagedBy   = "Terraform"
   }
 }
 
 # 3. Create Public Subnet
 resource "aws_subnet" "public_subnet" {
-  vpc_id = aws_vpc.devops_vpc.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.devops_vpc.id
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone = "us-east-1a"
+  availability_zone       = "us-east-1a"
 
   tags = {
     Name = "DevOps-Public-Subnet"
@@ -63,6 +63,6 @@ resource "aws_route_table" "public_rt" {
 
 # 6. Associate Subnet with Route Table
 resource "aws_route_table_association" "public_assoc" {
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_rt.id
 }
